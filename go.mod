@@ -1,3 +1,3 @@
-module github.com/nausicaan/spider
+module github.com/farghul/spider
 
 go 1.22
