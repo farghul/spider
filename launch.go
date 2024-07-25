@@ -136,7 +136,7 @@ func second() {
 	banner("Backing up the database")
 	backupDB()
 	banner("Replacing the destination blog_id with that of the source")
-	replaceIDs(sourceOBJ.BlogID, destOBJ.BlogID)
+	siteID(sourceOBJ.BlogID, destOBJ.BlogID)
 	banner("Importing the database tables")
 	importDB()
 }
@@ -192,7 +192,7 @@ func backupDB() {
 }
 
 // Replace the destination (did) blog_id's with that of the source (sid)
-func replaceIDs(sid, did string) {
+func siteID(sid, did string) {
 	// exec.Command("sed", "-i", "'s/wp_"+sid+"_/wp_"+did+"_/g'", "/data/temp/"+siteName+".sql").Run()
 	execute("-v", "sed", "-i", "'s/wp_"+sid+"_/wp_"+did+"_/g'", "/data/temp/"+siteName+".sql")
 }
@@ -203,7 +203,7 @@ func importDB() {
 	execute("-v", "wp", "db", "import", "/data/temp/"+siteName+".sql")
 }
 
-// Correct the links with search-replace
+// Correct the site links with wp search-replace
 func linkFix() {
 	// exec.Command("wp", "search-replace", "--url="+destURL, "--all-tables-with-prefix", sourceURL, destURL, "--quiet").Run()
 	execute("-v", "wp", "search-replace", "--url="+destURL, "--all-tables-with-prefix", sourceURL, destURL)
