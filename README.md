@@ -15,33 +15,45 @@ From the root folder containing *main.go*, use the command that matches your env
 ### Windows & Mac:
 
 ```bash
-go build -o [name] main.go
+go build -o [name] .
 ```
 
 ### Linux:
 
 ```bash
-GOOS=linux GOARCH=amd64 go build -o [name] main.go
+GOOS=linux GOARCH=amd64 go build -o [name] .
 ```
 
 ## Run
 
 ```bash
-[program] [flag] [website_slug]
+[program] [source flag] [destination flag] [website slug]
 ```
 
 ## Flags
 
 Current flages are:
 
-- s2p - Staging to Production and
+- -s (Staging)
 
-- p2s - Production to Staging
+- -p (Production)
+
+- -d (Development)
+
+- -e (Engage)
+
+- -f (Forms)
+
+- -g (GWW)
+
+- -w (Working)
+
+- -v (Vanity)
 
 Example deployment:
 
 ```bash
-spider -s2p antiracism
+spider -s -p antiracism
 ```
 
 ## License
