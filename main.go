@@ -1,5 +1,7 @@
 package main
 
+import "os"
+
 // Constant declarations
 const (
 	few  string = "Insufficient arguments supplied -"
@@ -8,9 +10,9 @@ const (
 
 // Start of the Spider application
 func main() {
-	if len(flag) < 3 {
+	if len(os.Args) < 4 {
 		alert(few)
-	} else if len(flag) > 3 {
+	} else if len(os.Args) > 4 {
 		alert(many)
 	} else {
 		quarterback()

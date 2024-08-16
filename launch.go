@@ -15,12 +15,16 @@ type Blog struct {
 
 // Platform holds the JSON data
 type Platform struct {
-	GWW        Website `json:"gww"`
-	Production Website `json:"production"`
-	Staging    Website `json:"staging"`
-	Test       Website `json:"test"`
-	Vanity     Website `json:"vanity"`
-	Email      Person  `json:"email"`
+	GWW         Website `json:"gww"`
+	Production  Website `json:"production"`
+	Development Website `json:"development"`
+	Staging     Website `json:"staging"`
+	Test        Website `json:"test"`
+	Engage      Website `json:"engage"`
+	Forms       Website `json:"forms"`
+	Working     Website `json:"working"`
+	Vanity      Website `json:"vanity"`
+	Email       Person  `json:"email"`
 }
 
 // Website holds the JSON data
@@ -36,45 +40,65 @@ type Person struct {
 
 // Variable declarations
 var (
-	flag                                     = os.Args[1]
-	websites                                 Platform
-	testObj, sourceOBJ, destOBJ              Blog
-	siteName, testID, stageID, prodID        string
-	sourcePath, sourceURL, destPath, destURL string
+	sflag              = os.Args[1]
+	dflag              = os.Args[2]
+	websites           Platform
+	sourceOBJ, destOBJ Blog
+	// String variables used to create objects
+	siteName, sourcePath, sourceURL, destPath, destURL string
 )
-
-/*
-Flags:
-	s2p - Staging to Production
-	p2s - Production to Staging
-	t2t - Test to Test
-*/
 
 // Quarterback function controls the flow of the program
 func quarterback() {
 	sites := readit("local/env.json")
 	json.Unmarshal(sites, &websites)
-	siteName = os.Args[2]
+	siteName = os.Args[3]
 
-	switch flag {
-	case "-s2p":
+	switch sflag {
+	case "-s":
 		source(websites.Staging.Path, websites.Staging.URL)
-		first()
-		destination(websites.Production.Path, websites.Production.URL)
-		receiver()
-	case "-p2s":
+	case "-p":
 		source(websites.Production.Path, websites.Production.URL)
-		first()
-		destination(websites.Staging.Path, websites.Staging.URL)
-		receiver()
-	case "-t2t":
+	case "-d":
+		source(websites.Development.Path, websites.Development.URL)
+	case "-e":
+		source(websites.Engage.Path, websites.Engage.URL)
+	case "-f":
+		source(websites.Forms.Path, websites.Forms.URL)
+	case "-g":
+		source(websites.GWW.Path, websites.GWW.URL)
+	case "-w":
+		source(websites.Working.Path, websites.Working.URL)
+	case "-v":
 		source(websites.Vanity.Path, websites.Vanity.URL)
-		first()
-		destination(websites.Test.Path, websites.Test.URL)
-		receiver()
 	default:
 		alert(huh)
 	}
+
+	first()
+
+	switch dflag {
+	case "-s":
+		destination(websites.Staging.Path, websites.Staging.URL)
+	case "-p":
+		destination(websites.Production.Path, websites.Production.URL)
+	case "-d":
+		destination(websites.Development.Path, websites.Development.URL)
+	case "-e":
+		destination(websites.Engage.Path, websites.Engage.URL)
+	case "-f":
+		destination(websites.Forms.Path, websites.Forms.URL)
+	case "-g":
+		destination(websites.GWW.Path, websites.GWW.URL)
+	case "-w":
+		destination(websites.Working.Path, websites.Working.URL)
+	case "-v":
+		destination(websites.Vanity.Path, websites.Vanity.URL)
+	default:
+		alert(huh)
+	}
+
+	receiver()
 }
 
 // Create the source object
