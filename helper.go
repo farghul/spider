@@ -19,6 +19,37 @@ const (
 
 var reader = bufio.NewReader(os.Stdin)
 
+// Tell the program what to do based on the results of a --dry-run
+func direct(answer, nav string) {
+	if strings.ToLower(answer) == "y" {
+		proceed(nav)
+	} else {
+		os.Exit(0)
+	}
+}
+
+// Solicit user confirmation after completion of a --dry-run
+func confirm() string {
+	answer := solicit("Does this output seem acceptable, shall we continue without the --dry-run flag? (y/n) ")
+	return answer
+}
+
+// Execute the functions without a --dry-run condition
+func proceed(action string) {
+	switch action {
+	case "lf":
+		linkFix()
+	case "ac":
+		assetCopy()
+	case "fr":
+		uploadsFolder()
+	case "fr2":
+		uploadsFolderEscapes()
+	case "hf":
+		httpFind()
+	}
+}
+
 // Get user input via screen prompt
 func solicit(prompt string) string {
 	fmt.Print(prompt)
@@ -26,16 +57,40 @@ func solicit(prompt string) string {
 	return strings.TrimSpace(response)
 }
 
+// Navigate to the WordPress installation
+func changedir(path string) {
+	os.Chdir("/data/www-app/" + path)
+}
+
+func properQURL(path string) string {
+	var url string
+
+	if strings.Contains(path, "test") {
+		url = websites.Test.URL
+	} else if strings.Contains(path, "dev") {
+		url = websites.Development.URL
+	} else {
+		url = websites.Blog.URL
+	}
+
+	return url
+}
+
 // Run standard terminal commands
 func execute(variation, task string, args ...string) []byte {
-	osCmd := exec.Command(task, args...)
+	lpath, err := exec.LookPath(task)
+	inspect(err)
+	osCmd := exec.Command(lpath, args...)
 	switch variation {
 	case "-e":
-		exec.Command(task, args...).CombinedOutput()
+		// Execute straight away
+		exec.Command(lpath, args...).CombinedOutput()
 	case "-c":
+		// Capture and return the output as a byte
 		both, _ := osCmd.CombinedOutput()
 		return both
 	case "-v":
+		// Execute verbosely
 		osCmd.Stdout = os.Stdout
 		osCmd.Stderr = os.Stderr
 		err := osCmd.Run()
@@ -68,40 +123,9 @@ func banner(message string) {
 	fmt.Println("**", automatic, message, fgYellow, "**", automatic)
 }
 
-// Tell the program what to do based on the results of a --dry-run
-func direct(answer, nav string) {
-	if strings.ToLower(answer) == "y" {
-		proceed(nav)
-	} else {
-		os.Exit(0)
-	}
-}
-
-// Execute the functions without a --dry-run condition
-func proceed(action string) {
-	switch action {
-	case "lf":
-		linkFix()
-	case "ac":
-		assetCopy(sourceOBJ.BlogID, destOBJ.BlogID)
-	case "fr":
-		uploadsFolder(sourceOBJ.BlogID, destOBJ.BlogID)
-	case "fr2":
-		uploadsFolderEscapes(sourceOBJ.BlogID, destOBJ.BlogID)
-	case "hf":
-		httpFind()
-	}
-}
-
-// Solicite user confirmation after completion of a --dry-run
-func confirm(d string) string {
-	fmt.Println(d)
-	answer := solicit("Does this output seem acceptable, shall we continue without the --dry-run flag? (y/n) ")
-	return answer
-}
-
 // Alert prints a colourized error message
 func alert(message string) {
 	fmt.Println(bgRed, message, halt)
 	fmt.Println(automatic)
+	os.Exit(0)
 }
