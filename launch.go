@@ -24,41 +24,31 @@ func quarterback() {
 
 	for i, f := range choices {
 		if f == sflag {
-			sspot = i
+			sourceURL = combinations[i][0]
+			sourcePath = combinations[i][1]
 		}
 
 		if f == dflag {
-			dspot = i
+			destURL = combinations[i][0]
+			destPath = combinations[i][1]
 		}
 	}
 
-	source(combinations[sspot][0], combinations[sspot][1])
+	sourceList := construct(sourcePath)
+	sourceID = aquireID(sourceURL, sourceList)
 	first()
-	destination(combinations[dspot][0], combinations[dspot][1])
+	destList := construct(destPath)
+	destID = aquireID(destURL, destList)
 	receiver()
-}
-
-// Create the source object
-func source(url, path string) {
-	sourceURL, sourcePath = url, path          // Transfer local JSON contents to main code
-	sourceList := construct(sourcePath)        // List of source sites in JSON format
-	sourceID = aquireID(sourceURL, sourceList) // Creates a specific source object
-}
-
-// Create the destination object
-func destination(url, path string) {
-	destURL, destPath = url, path        // Transfer local JSON contents to main code
-	destList := construct(destPath)      // List of destination sites in JSON format
-	destID = aquireID(destURL, destList) // The specific destination object
 }
 
 // Run the first few functions up to the new site creation
 func first() {
-	banner("Exporting the database tables")
+	banner("Exporting the " + sourceURL + "/" + siteSlug + " database tables")
 	exportDB()
-	banner("Creating a user export file")
+	banner("Exporting the " + sourceURL + "/" + siteSlug + " users")
 	exportUsers()
-	banner("Creating the new WordPress site")
+	banner("Creating the new " + destURL + "/" + siteSlug + "WordPress site")
 	createSite(user.Admin)
 }
 
@@ -96,26 +86,26 @@ func receiver() {
 
 // Run the second round of functions after being able to grab the new site ID
 func second() {
-	banner("Backing up the database")
+	banner("Backing up the entire WordPress database")
 	backupDB()
-	banner("Replacing the destination blog_id with that of the source")
+	banner("Replacing " + sourceID + " with " + destID)
 	siteID()
-	banner("Importing the database tables")
+	banner("Importing the " + sourceURL + "/" + siteSlug + " database tables")
 	importDB()
 }
 
 // Pre-emptively run the data modifying functions in --dry-run mode
 func dryrun() {
-	banner("Updating URL's")
+	banner("Updating URL's to " + destURL)
 	linkFixDR()
 	direct(confirm(), "lf")
-	banner("Copying Assets")
+	banner("Copying Assets to /data/www-assets/" + destPath + "/uploads/sites/" + destID)
 	assetCopyDR()
 	direct(confirm(), "ac")
-	banner("Fixing Uploads")
+	banner("Updating references to app/uploads/sites/" + destID)
 	uploadsFolderDR()
 	direct(confirm(), "fr")
-	banner("Fixing Escapes")
+	banner("Fixing unescaped folders due to Gutenberg Blocks in app/uploads/sites/" + destID)
 	uploadsFolderEscapesDR()
 	direct(confirm(), "fr2")
 	banner("Fixing HTTP References")

@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-// Platform holds variations of a multisite in JSON form
+// Platform holds variations of a multisite WordPress install
 type Platform struct {
 	Test        Location `json:"test"`
 	Blog        Location `json:"blog"`
@@ -18,14 +18,14 @@ type Platform struct {
 	Development Location `json:"development"`
 }
 
-// Website holds the WordPress location data in JSON form
+// Location holds the WordPress location data
 type Location struct {
 	URL    string `json:"url"`
 	Path   string `json:"path"`
 	Server string `json:"server"`
 }
 
-// Person holds the Administrator email in JSON form
+// Person holds the Administrator email
 type Person struct {
 	Admin string `json:"admin"`
 }
@@ -43,15 +43,14 @@ const (
 
 // Variable declarations
 var (
-	wordpress    Platform
-	user         Person
-	sspot, dspot int
-	purpose      = os.Args
-	sflag        = os.Args[1]
-	dflag        = os.Args[2]
-	siteSlug     = os.Args[3]
-	reader       = bufio.NewReader(os.Stdin)
-	choices      = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
+	wordpress Platform
+	user      Person
+	purpose   = os.Args
+	sflag     = os.Args[1]
+	dflag     = os.Args[2]
+	siteSlug  = os.Args[3]
+	reader    = bufio.NewReader(os.Stdin)
+	choices   = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
 	// String variables used to create objects
 	sourcePath, sourceURL, sourceID, destPath, destURL, destID string
 )
