@@ -1,23 +1,12 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"io"
 	"os"
 	"os/exec"
 	"strings"
 )
-
-const (
-	automatic string = "\033[0m"
-	bgRed     string = "\033[41m"
-	fgYellow  string = "\033[33m"
-	halt      string = "program halted "
-	huh       string = "Unrecognized flag detected -"
-)
-
-var reader = bufio.NewReader(os.Stdin)
 
 // Tell the program what to do based on the results of a --dry-run
 func direct(answer, nav string) {
@@ -66,11 +55,11 @@ func properQURL(path string) string {
 	var url string
 
 	if strings.Contains(path, "test") {
-		url = websites.Test.URL
+		url = wordpress.Test.URL
 	} else if strings.Contains(path, "dev") {
-		url = websites.Development.URL
+		url = wordpress.Development.URL
 	} else {
-		url = websites.Blog.URL
+		url = wordpress.Blog.URL
 	}
 
 	return url

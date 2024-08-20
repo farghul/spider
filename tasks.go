@@ -11,7 +11,6 @@ func exportDB() {
 	result := strings.ReplaceAll(string(inside), "\n", ",")
 	result = strings.TrimSuffix(result, ",")
 	execute("-v", "wp", "db", "export", "--tables="+result, "/data/temp/"+siteSlug+".sql")
-
 }
 
 // Create a user export file in JSON format
@@ -54,8 +53,6 @@ func linkFix() {
 func assetCopy() {
 	changedir(destPath)
 	execute("-v", "rsync", "-a", "/data/www-assets/"+sourcePath+"/uploads/sites/"+sourceID+"/", "/data/www-assets/"+destPath+"/uploads/sites/"+destID+"/")
-	// rsync -a /data/www-app/test_blog_gov_bc_ca/current/web/app/uploads/sites/392/ /data/www-app/dev_blog_gov_bc_ca/current/web/app/uploads/sites/187/ --stats
-
 }
 
 // Correct the references to the uploads folder

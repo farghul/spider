@@ -7,21 +7,19 @@ import (
 
 // Quarterback function controls the flow of the program
 func quarterback() {
-	// read a json file and builds the objects
 	sites := readit("local/env.json")
-	json.Unmarshal(sites, &websites)
-	var sspot, dspot int
+	json.Unmarshal(sites, &wordpress)
 
 	combinations := [9][2]string{
-		{websites.Production.URL, websites.Production.Path},
-		{websites.Staging.URL, websites.Staging.Path},
-		{websites.Blog.URL, websites.Blog.Path},
-		{websites.Development.URL, websites.Development.Path},
-		{websites.Test.URL, websites.Test.Path},
-		{websites.Engage.URL, websites.Engage.Path},
-		{websites.Forms.URL, websites.Forms.Path},
-		{websites.Working.URL, websites.Working.Path},
-		{websites.Vanity.URL, websites.Vanity.Path},
+		{wordpress.Production.URL, wordpress.Production.Path},
+		{wordpress.Staging.URL, wordpress.Staging.Path},
+		{wordpress.Blog.URL, wordpress.Blog.Path},
+		{wordpress.Development.URL, wordpress.Development.Path},
+		{wordpress.Test.URL, wordpress.Test.Path},
+		{wordpress.Engage.URL, wordpress.Engage.Path},
+		{wordpress.Forms.URL, wordpress.Forms.Path},
+		{wordpress.Working.URL, wordpress.Working.Path},
+		{wordpress.Vanity.URL, wordpress.Vanity.Path},
 	}
 
 	for i, f := range choices {
@@ -38,45 +36,6 @@ func quarterback() {
 	first()
 	destination(combinations[dspot][0], combinations[dspot][1])
 	receiver()
-
-	// switch sflag {
-	// case "-s":
-	// 	source(websites.Staging.URL, websites.Staging.Path)
-	// case "-p":
-	// 	source(websites.Production.URL, websites.Production.Path)
-	// case "-d":
-	// 	source(websites.Development.URL, websites.Development.Path)
-	// case "-e":
-	// 	source(websites.Engage.URL, websites.Engage.Path)
-	// case "-f":
-	// 	source(websites.Forms.URL, websites.Forms.Path)
-	// case "-w":
-	// 	source(websites.Working.URL, websites.Working.Path)
-	// case "-v":
-	// 	source(websites.Vanity.URL, websites.Vanity.Path)
-	// default:
-	// 	alert(huh)
-	// }
-
-	// switch dflag {
-	// case "-s":
-	// 	destination(websites.Staging.URL, websites.Staging.Path)
-	// case "-p":
-	// 	destination(websites.Production.URL, websites.Production.Path)
-	// case "-d":
-	// 	destination(websites.Development.URL, websites.Development.Path)
-	// case "-e":
-	// 	destination(websites.Engage.URL, websites.Engage.Path)
-	// case "-f":
-	// 	destination(websites.Forms.URL, websites.Forms.Path)
-	// case "-w":
-	// 	destination(websites.Working.URL, websites.Working.Path)
-	// case "-v":
-	// 	destination(websites.Vanity.URL, websites.Vanity.Path)
-	// default:
-	// 	alert(huh)
-	// }
-
 }
 
 // Create the source object
@@ -100,7 +59,7 @@ func first() {
 	banner("Creating a user export file")
 	exportUsers()
 	banner("Creating the new WordPress site")
-	// createSite(websites.Email.Admin)
+	createSite(user.Admin)
 }
 
 // Query WordPress for a list of all sites and save as a csv variable
@@ -138,7 +97,7 @@ func receiver() {
 // Run the second round of functions after being able to grab the new site ID
 func second() {
 	banner("Backing up the database")
-	// backupDB()
+	backupDB()
 	banner("Replacing the destination blog_id with that of the source")
 	siteID()
 	banner("Importing the database tables")
