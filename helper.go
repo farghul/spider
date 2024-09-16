@@ -51,6 +51,7 @@ func changedir(path string) {
 	os.Chdir("/data/www-app/" + path)
 }
 
+// Set the proper url for running WP CLI queries
 func properQURL(path string) string {
 	var url string
 
@@ -96,6 +97,23 @@ func readit(file string) []byte {
 	inspect(err)
 	defer mission.Close()
 	return outcome
+}
+
+// Run through remote and local options
+func discovery(where []string, mix [9][3]string) {
+	for i, f := range where {
+		if f == sflag {
+			sourceURL = mix[i][0]
+			sourcePath = mix[i][1]
+			sourceServer = mix[i][2]
+		}
+
+		if f == dflag {
+			destURL = mix[i][0]
+			destPath = mix[i][1]
+			destServer = mix[i][2]
+		}
+	}
 }
 
 // Check for errors, print the result if found

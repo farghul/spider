@@ -37,8 +37,8 @@ const (
 	bgRed     string = "\033[41m"
 	halt      string = "program halted "
 	huh       string = "Unrecognized flag detected -"
-	few       string = "Insufficient arguments supplied -"
 	many      string = "Too many arguments supplied -"
+	few       string = "Insufficient arguments supplied -"
 )
 
 // Variable declarations
@@ -50,7 +50,8 @@ var (
 	dflag     = os.Args[2]
 	siteSlug  = os.Args[3]
 	reader    = bufio.NewReader(os.Stdin)
-	choices   = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
+	local     = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
+	remote    = []string{"-pr", "-sr", "-br", "-dr", "-tr", "-er", "-fr", "-wr", "-vr"}
 	// String variables used to create objects
-	sourcePath, sourceURL, sourceID, destPath, destURL, destID string
+	sourcePath, sourceURL, sourceID, sourceServer, destPath, destURL, destID, destServer string
 )
