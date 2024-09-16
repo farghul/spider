@@ -10,28 +10,22 @@ func quarterback() {
 	sites := readit("local/env.json")
 	json.Unmarshal(sites, &wordpress)
 
-	combinations := [9][2]string{
-		{wordpress.Production.URL, wordpress.Production.Path},
-		{wordpress.Staging.URL, wordpress.Staging.Path},
-		{wordpress.Blog.URL, wordpress.Blog.Path},
-		{wordpress.Development.URL, wordpress.Development.Path},
-		{wordpress.Test.URL, wordpress.Test.Path},
-		{wordpress.Engage.URL, wordpress.Engage.Path},
-		{wordpress.Forms.URL, wordpress.Forms.Path},
-		{wordpress.Working.URL, wordpress.Working.Path},
-		{wordpress.Vanity.URL, wordpress.Vanity.Path},
+	trios := [9][3]string{
+		{wordpress.Production.URL, wordpress.Production.Path, wordpress.Production.Server},
+		{wordpress.Staging.URL, wordpress.Staging.Path, wordpress.Staging.Server},
+		{wordpress.Blog.URL, wordpress.Blog.Path, wordpress.Blog.Server},
+		{wordpress.Development.URL, wordpress.Development.Path, wordpress.Development.Server},
+		{wordpress.Test.URL, wordpress.Test.Path, wordpress.Test.Server},
+		{wordpress.Engage.URL, wordpress.Engage.Path, wordpress.Engage.Server},
+		{wordpress.Forms.URL, wordpress.Forms.Path, wordpress.Forms.Server},
+		{wordpress.Working.URL, wordpress.Working.Path, wordpress.Working.Server},
+		{wordpress.Vanity.URL, wordpress.Vanity.Path, wordpress.Vanity.Server},
 	}
 
-	for i, f := range choices {
-		if f == sflag {
-			sourceURL = combinations[i][0]
-			sourcePath = combinations[i][1]
-		}
+	discovery(local, trios)
+	discovery(remote, trios)
 
-		if f == dflag {
-			destURL = combinations[i][0]
-			destPath = combinations[i][1]
-		}
+	if sourceServer != destServer {
 	}
 
 	sourceList := construct(sourcePath)
