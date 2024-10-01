@@ -25,9 +25,10 @@ type Location struct {
 	Server string `json:"server"`
 }
 
-// Person holds the Administrator email
+// Person holds the Administrator email and SSH credentials
 type Person struct {
 	Admin string `json:"admin"`
+	SSH   string `json:"ssh"`
 }
 
 // Constant declarations

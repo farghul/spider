@@ -39,16 +39,21 @@ func proceed(action string) {
 	}
 }
 
-// Get user input via screen prompt
-func solicit(prompt string) string {
-	fmt.Print(prompt)
-	response, _ := reader.ReadString('\n')
-	return strings.TrimSpace(response)
-}
+// Run through remote and local options
+func discovery(where []string, mix [9][3]string) {
+	for i, f := range where {
+		if f == sflag {
+			sourceURL = mix[i][0]
+			sourcePath = mix[i][1]
+			sourceServer = mix[i][2]
+		}
 
-// Navigate to the WordPress installation
-func changedir(path string) {
-	os.Chdir("/data/www-app/" + path)
+		if f == dflag {
+			destURL = mix[i][0]
+			destPath = mix[i][1]
+			destServer = mix[i][2]
+		}
+	}
 }
 
 // Set the proper url for running WP CLI queries
@@ -89,6 +94,18 @@ func execute(variation, task string, args ...string) []byte {
 	return nil
 }
 
+// Get user input via screen prompt
+func solicit(prompt string) string {
+	fmt.Print(prompt)
+	response, _ := reader.ReadString('\n')
+	return strings.TrimSpace(response)
+}
+
+// Navigate to the WordPress installation
+func changedir(path string) {
+	os.Chdir("/data/www-app/" + path)
+}
+
 // Read any file and return the contents as a byte variable
 func readit(file string) []byte {
 	mission, err := os.Open(file)
@@ -97,23 +114,6 @@ func readit(file string) []byte {
 	inspect(err)
 	defer mission.Close()
 	return outcome
-}
-
-// Run through remote and local options
-func discovery(where []string, mix [9][3]string) {
-	for i, f := range where {
-		if f == sflag {
-			sourceURL = mix[i][0]
-			sourcePath = mix[i][1]
-			sourceServer = mix[i][2]
-		}
-
-		if f == dflag {
-			destURL = mix[i][0]
-			destPath = mix[i][1]
-			destServer = mix[i][2]
-		}
-	}
 }
 
 // Check for errors, print the result if found

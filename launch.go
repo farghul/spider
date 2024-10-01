@@ -7,7 +7,7 @@ import (
 
 // Quarterback function controls the flow of the program
 func quarterback() {
-	sites := readit("local/env.json")
+	sites := readit("env.json")
 	json.Unmarshal(sites, &wordpress)
 
 	trios := [9][3]string{
