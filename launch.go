@@ -22,10 +22,12 @@ func quarterback() {
 		{wordpress.Vanity.URL, wordpress.Vanity.Path, wordpress.Vanity.Server},
 	}
 
-	discovery(local, trios)
-	discovery(remote, trios)
+	discovery(trios)
 
 	if sourceServer != destServer {
+		// USE SSH TO COPY RESOURCES
+	} else {
+		// PROCEED NORMALLY
 	}
 
 	sourceList := construct(sourcePath)
