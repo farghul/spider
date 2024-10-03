@@ -51,8 +51,7 @@ var (
 	dflag     = os.Args[2]
 	siteSlug  = os.Args[3]
 	reader    = bufio.NewReader(os.Stdin)
-	local     = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
-	remote    = []string{"-pr", "-sr", "-br", "-dr", "-tr", "-er", "-fr", "-wr", "-vr"}
+	servers   = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
 	// String variables used to create objects
 	sourcePath, sourceURL, sourceID, sourceServer, destPath, destURL, destID, destServer string
 )
