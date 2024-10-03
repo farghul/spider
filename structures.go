@@ -25,9 +25,10 @@ type Location struct {
 	Server string `json:"server"`
 }
 
-// Person holds the Administrator email
+// Person holds the Administrator email and SSH credentials
 type Person struct {
 	Admin string `json:"admin"`
+	SSH   string `json:"ssh"`
 }
 
 // Constant declarations
@@ -37,8 +38,8 @@ const (
 	bgRed     string = "\033[41m"
 	halt      string = "program halted "
 	huh       string = "Unrecognized flag detected -"
-	few       string = "Insufficient arguments supplied -"
 	many      string = "Too many arguments supplied -"
+	few       string = "Insufficient arguments supplied -"
 )
 
 // Variable declarations
@@ -50,7 +51,7 @@ var (
 	dflag     = os.Args[2]
 	siteSlug  = os.Args[3]
 	reader    = bufio.NewReader(os.Stdin)
-	choices   = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
+	servers   = []string{"-p", "-s", "-b", "-d", "-t", "-e", "-f", "-w", "-v"}
 	// String variables used to create objects
-	sourcePath, sourceURL, sourceID, destPath, destURL, destID string
+	sourcePath, sourceURL, sourceID, sourceServer, destPath, destURL, destID, destServer string
 )

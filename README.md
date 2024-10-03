@@ -1,6 +1,6 @@
 # Spider
 
-Spider is a WordPress website (blog) deployment tool. It Automates the process of launching and transfering database assets to a new WordPress blog site. Designed with multisite migration in mind, it is ready to 
+Spider is a WordPress website (blog) deployment tool. It Automates the process of launching and transfering database assets to a new WordPress blog site. Designed with multisite migration in mind and assuming an architecture involving multiple servers (physical, VM, etc.).
 
 ![Spider](spider.webp)
 
@@ -8,7 +8,7 @@ Spider is a WordPress website (blog) deployment tool. It Automates the process o
 
 - Googles' [Go language](https://go.dev) installed to enable building executables from source code.
 
-- An `env.json` file in a subfolder `local` containing enviromental data:
+- An `env.json` file containing enviromental data:
 
 ```json
 	"production": {

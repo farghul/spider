@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// Export the source WordPress site database to an sql file
 func exportDB() {
 	changedir(sourcePath)
 	inside := execute("-c", "wp", "db", "tables", "--all-tables-with-prefix", "--url="+sourceURL+"/"+siteSlug, "--format=csv")
@@ -26,18 +27,18 @@ func createSite(email string) {
 	execute("-v", "wp", "site", "create", "--url=https://"+destURL, "--title="+siteSlug, "--slug="+siteSlug, "--email="+email)
 }
 
-// Backup the WordPress SQL database
+// Backup the entire destination WordPress SQL database
 func backupDB() {
 	changedir(destPath)
 	execute("-v", "wp", "db", "export", "--path=/data/www-app/"+destPath+"/current/web/wp", "/data/temp/backup.sql")
 }
 
-// Replace the destination (destID) blog_id's with that of the source (sourceID)
+// Replace the source (sourceID) with that of the destination (destID)
 func siteID() {
 	execute("-v", "sed", "-i", "s/wp_"+sourceID+"_/wp_"+destID+"_/g", "/data/temp/"+siteSlug+".sql")
 }
 
-// Import the WordPress SQL database tables
+// Import the WordPress SQL database tables into the destination
 func importDB() {
 	changedir(destPath)
 	execute("-v", "wp", "db", "import", "/data/temp/"+siteSlug+".sql")

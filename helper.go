@@ -39,18 +39,24 @@ func proceed(action string) {
 	}
 }
 
-// Get user input via screen prompt
-func solicit(prompt string) string {
-	fmt.Print(prompt)
-	response, _ := reader.ReadString('\n')
-	return strings.TrimSpace(response)
+// Run through server options
+func discovery(trios [9][3]string) {
+	for i, f := range servers {
+		if f == sflag {
+			sourceURL = trios[i][0]
+			sourcePath = trios[i][1]
+			sourceServer = trios[i][2]
+		}
+
+		if f == dflag {
+			destURL = trios[i][0]
+			destPath = trios[i][1]
+			destServer = trios[i][2]
+		}
+	}
 }
 
-// Navigate to the WordPress installation
-func changedir(path string) {
-	os.Chdir("/data/www-app/" + path)
-}
-
+// Set the proper url for running WP CLI queries
 func properQURL(path string) string {
 	var url string
 
@@ -86,6 +92,18 @@ func execute(variation, task string, args ...string) []byte {
 		inspect(err)
 	}
 	return nil
+}
+
+// Get user input via screen prompt
+func solicit(prompt string) string {
+	fmt.Print(prompt)
+	response, _ := reader.ReadString('\n')
+	return strings.TrimSpace(response)
+}
+
+// Navigate to the WordPress installation
+func changedir(path string) {
+	os.Chdir("/data/www-app/" + path)
 }
 
 // Read any file and return the contents as a byte variable
