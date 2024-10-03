@@ -1,6 +1,6 @@
 # Spider
 
-Spider is a WordPress website (blog) deployment tool. It Automates the process of launching and transfering database assets to a new WordPress blog site. Designed with multisite migration in mind, it is ready to 
+Spider is a WordPress website (blog) deployment tool. It Automates the process of launching and transfering database assets to a new WordPress blog site. Designed with multisite migration in mind and assuming an architecture involving multiple servers (physical, VM, etc.).
 
 ![Spider](spider.webp)
 
