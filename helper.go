@@ -39,19 +39,19 @@ func proceed(action string) {
 	}
 }
 
-// Run through remote and local options
-func discovery(where []string, mix [9][3]string) {
-	for i, f := range where {
+// Run through server options
+func discovery(trios [9][3]string) {
+	for i, f := range servers {
 		if f == sflag {
-			sourceURL = mix[i][0]
-			sourcePath = mix[i][1]
-			sourceServer = mix[i][2]
+			sourceURL = trios[i][0]
+			sourcePath = trios[i][1]
+			sourceServer = trios[i][2]
 		}
 
 		if f == dflag {
-			destURL = mix[i][0]
-			destPath = mix[i][1]
-			destServer = mix[i][2]
+			destURL = trios[i][0]
+			destPath = trios[i][1]
+			destServer = trios[i][2]
 		}
 	}
 }
