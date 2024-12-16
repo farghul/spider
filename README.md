@@ -8,14 +8,21 @@ Spider is a WordPress website (blog) deployment tool. It Automates the process o
 
 - Googles' [Go language](https://go.dev) installed to enable building executables from source code.
 
-- An `env.json` file containing enviromental data:
+- An `env.json` file containing enviromental data, for example:
 
 ```json
+{
 	"production": {
 		"url": "example.com",
 		"path": "example_com",
 		"server": "example.dmz"
 	},
+	"test": {
+		"url": "test.example.com",
+		"path": "test_example_com",
+		"server": "test.example.dmz"
+	}
+}
 ```
 
 ## Build
