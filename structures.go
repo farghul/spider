@@ -5,6 +5,12 @@ import (
 	"os"
 )
 
+type ExecOptions struct {
+	Stream bool
+	Env    []string
+	Dir    string
+}
+
 // Platform holds variations of a multisite WordPress install
 type Platform struct {
 	Test        Location `json:"test"`

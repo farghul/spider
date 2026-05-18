@@ -7,7 +7,7 @@ import (
 
 // Quarterback function controls the flow of the program
 func quarterback() {
-	sites := readit("env.json")
+	sites := read("env.json")
 	json.Unmarshal(sites, &wordpress)
 
 	trios := [9][3]string{
@@ -25,9 +25,9 @@ func quarterback() {
 	discovery(trios)
 
 	if sourceServer != destServer {
-		// USE SSH TO COPY RESOURCES
+		/* USE SSH TO COPY RESOURCES */
 	} else {
-		// PROCEED NORMALLY
+		/* PROCEED NORMALLY */
 	}
 
 	sourceList := construct(sourcePath)
@@ -51,7 +51,8 @@ func first() {
 // Query WordPress for a list of all sites and save as a csv variable
 func construct(path string) string {
 	url := properQURL(path)
-	query := execute("-c", "wp", "site", "list", "--fields=blog_id,url", "--path=/data/www-app/"+path+"/current/web/wp", "--url="+url, "--skip-plugins", "--skip-themes", "--format=csv")
+	query, err := execute("wp", []string{"site", "list", "--fields=blog_id,url", "--path=/data/www-app/" + path + "/current/web/wp", "--url=" + url, "--skip-plugins", "--skip-themes", "--format=csv"}, ExecOptions{Stream: false})
+	inspect(err)
 	result := strings.Replace(string(query), "blog_id,url\n", "", 1)
 	result = strings.ReplaceAll(result, "\n", ",")
 	result = strings.TrimSuffix(result, ",")

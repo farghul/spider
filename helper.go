@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -19,7 +18,7 @@ func direct(answer, nav string) {
 
 // Solicit user confirmation after completion of a --dry-run
 func confirm() string {
-	answer := solicit("Does this output seem acceptable, shall we continue without the --dry-run flag? (y/n) ")
+	answer := solicit("Does this output seem acceptable? Shall we continue without the --dry-run flag? (y/n) ")
 	return answer
 }
 
@@ -71,27 +70,18 @@ func properQURL(path string) string {
 	return url
 }
 
-// Run standard terminal commands
-func execute(variation, task string, args ...string) []byte {
-	lpath, err := exec.LookPath(task)
-	inspect(err)
-	osCmd := exec.Command(lpath, args...)
-	switch variation {
-	case "-e":
-		// Execute straight away
-		exec.Command(lpath, args...).CombinedOutput()
-	case "-c":
-		// Capture and return the output as a byte
-		both, _ := osCmd.CombinedOutput()
-		return both
-	case "-v":
-		// Execute verbosely
-		osCmd.Stdout = os.Stdout
-		osCmd.Stderr = os.Stderr
-		err := osCmd.Run()
-		inspect(err)
+func execute(task string, args []string, opts ExecOptions) ([]byte, error) {
+	cmd := exec.Command(task, args...)
+	cmd.Env = append(os.Environ(), opts.Env...)
+	cmd.Dir = opts.Dir
+
+	if opts.Stream {
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		return nil, cmd.Run()
 	}
-	return nil
+
+	return cmd.CombinedOutput()
 }
 
 // Get user input via screen prompt
@@ -107,12 +97,9 @@ func changedir(path string) {
 }
 
 // Read any file and return the contents as a byte variable
-func readit(file string) []byte {
-	mission, err := os.Open(file)
-	inspect(err)
-	outcome, err := io.ReadAll(mission)
-	inspect(err)
-	defer mission.Close()
+func read(file string) []byte {
+	outcome, problem := os.ReadFile(file)
+	inspect(problem)
 	return outcome
 }
 
